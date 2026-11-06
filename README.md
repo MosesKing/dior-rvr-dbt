@@ -63,29 +63,11 @@ Dans le pipeline d'origine, le RVR est calculé en Python, **annonce par annonce
 
 ```mermaid
 %%{init: {'theme':'base','themeVariables':{'primaryColor':'#FBF8F3','primaryBorderColor':'#1A1A1A','primaryTextColor':'#1A1A1A','lineColor':'#6B6460','clusterBkg':'#F4EFE7','clusterBorder':'#D9D2C7','edgeLabelBackground':'#FFFFFF','fontFamily':'Helvetica, Arial, sans-serif'}}}%%
-flowchart TB
-    subgraph S["① Sources"]
-        direction LR
-        D[Dior.com<br/>prix boutique]
-        V[Vestiaire Collective<br/>annonces]
-        R[Rebag<br/>annonces]
-    end
-    subgraph P["② Pipeline de l'équipe · Python"]
-        direction LR
-        SC[Scrapers<br/>Playwright] --> N[Normalisation] --> M[Matching flou<br/>≥ 70 % de similarité]
-    end
-    subgraph T["③ Ce dépôt · dbt · 18 tests à chaque push"]
-        direction LR
-        STG[staging<br/>nettoyage, typage] --> MART[marts<br/>RVR médian, statut, couverture]
-    end
-    subgraph U["④ Usage"]
-        direction LR
-        BQ[(BigQuery)] --> BI[Power BI · API]
-    end
-    S --> P --> T --> U
+flowchart LR
+    A["Sources<br/><i>Dior.com · Vestiaire Collective · Rebag</i>"] --> B["Pipeline de l'équipe · Python<br/><i>scraping · normalisation · matching flou</i>"] --> C["Ce dépôt · dbt<br/><i>staging · marts · 18 tests · CI</i>"] --> D["Usage<br/><i>BigQuery · Power BI · API</i>"]
 
     classDef dbt fill:#A8842C,stroke:#1A1A1A,color:#FFFFFF
-    class STG,MART dbt
+    class C dbt
 ```
 
 | | Avant (Python) | Avec dbt |
@@ -138,9 +120,9 @@ flowchart LR
     B -- 0 --> C[non rattaché<br/><i>améliorer le matching</i>]
     B -- 1 à 4 --> D[volume insuffisant<br/><i>attendre plus de données</i>]
     B -- 5 et plus --> E{RVR}
-    E -- "≥ 100 %" --> F[se revend plus cher<br/><i>pouvoir de prix, icône possible</i>]
-    E -- "90 à 100 %" --> G[garde sa valeur<br/><i>produit sain</i>]
-    E -- "< 90 %" --> H[se déprécie<br/><i>surveiller l'exposition</i>]
+    E -- "RVR de 100 et plus" --> F[se revend plus cher<br/><i>pouvoir de prix, icône possible</i>]
+    E -- "RVR de 90 à 99" --> G[garde sa valeur<br/><i>produit sain</i>]
+    E -- "RVR sous 90" --> H[se déprécie<br/><i>surveiller l'exposition</i>]
 
     classDef up fill:#A8842C,stroke:#1A1A1A,color:#FFFFFF
     classDef keep fill:#D9C9A3,stroke:#1A1A1A,color:#1A1A1A

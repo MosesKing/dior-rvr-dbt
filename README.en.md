@@ -63,29 +63,11 @@ In the original pipeline, RVR is computed in Python, **one listing at a time**, 
 
 ```mermaid
 %%{init: {'theme':'base','themeVariables':{'primaryColor':'#FBF8F3','primaryBorderColor':'#1A1A1A','primaryTextColor':'#1A1A1A','lineColor':'#6B6460','clusterBkg':'#F4EFE7','clusterBorder':'#D9D2C7','edgeLabelBackground':'#FFFFFF','fontFamily':'Helvetica, Arial, sans-serif'}}}%%
-flowchart TB
-    subgraph S["① Sources"]
-        direction LR
-        D[Dior.com<br/>retail prices]
-        V[Vestiaire Collective<br/>listings]
-        R[Rebag<br/>listings]
-    end
-    subgraph P["② Team pipeline · Python"]
-        direction LR
-        SC[Scrapers<br/>Playwright] --> N[Normalisation] --> M[Fuzzy matching<br/>≥ 70% similarity]
-    end
-    subgraph T["③ This repo · dbt · 18 tests on every push"]
-        direction LR
-        STG[staging<br/>cleaning, typing] --> MART[marts<br/>median RVR, status, coverage]
-    end
-    subgraph U["④ Usage"]
-        direction LR
-        BQ[(BigQuery)] --> BI[Power BI · API]
-    end
-    S --> P --> T --> U
+flowchart LR
+    A["Sources<br/><i>Dior.com · Vestiaire Collective · Rebag</i>"] --> B["Team pipeline · Python<br/><i>scraping · normalisation · fuzzy matching</i>"] --> C["This repo · dbt<br/><i>staging · marts · 18 tests · CI</i>"] --> D["Usage<br/><i>BigQuery · Power BI · API</i>"]
 
     classDef dbt fill:#A8842C,stroke:#1A1A1A,color:#FFFFFF
-    class STG,MART dbt
+    class C dbt
 ```
 
 | | Before (Python) | With dbt |
@@ -140,9 +122,9 @@ flowchart LR
     B -- 0 --> C[not matched<br/><i>improve matching</i>]
     B -- 1 to 4 --> D[not enough volume<br/><i>wait for more data</i>]
     B -- 5 or more --> E{RVR}
-    E -- "≥ 100%" --> F[resells above retail<br/><i>pricing power, possible icon</i>]
-    E -- "90 to 100%" --> G[holds its value<br/><i>healthy product</i>]
-    E -- "< 90%" --> H[depreciates<br/><i>watch exposure</i>]
+    E -- "RVR 100 or more" --> F[resells above retail<br/><i>pricing power, possible icon</i>]
+    E -- "RVR 90 to 99" --> G[holds its value<br/><i>healthy product</i>]
+    E -- "RVR under 90" --> H[depreciates<br/><i>watch exposure</i>]
 
     classDef up fill:#A8842C,stroke:#1A1A1A,color:#FFFFFF
     classDef keep fill:#D9C9A3,stroke:#1A1A1A,color:#1A1A1A
