@@ -62,7 +62,7 @@ The team's full pipeline (scraping, normalisation, listing matching, BigQuery, F
 In the original pipeline, RVR is computed in Python, **one listing at a time**, then loaded into BigQuery. This repo adds a dbt layer between the matched data and the numbers people see.
 
 ```mermaid
-%%{init: {'theme':'base','themeVariables':{'primaryColor':'#FBF8F3','primaryBorderColor':'#1A1A1A','primaryTextColor':'#1A1A1A','lineColor':'#6B6460','clusterBkg':'#F4EFE7','clusterBorder':'#D9D2C7','edgeLabelBackground':'#FFFFFF','fontFamily':'Helvetica, Arial, sans-serif'}}}%%
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#FBF8F3','primaryBorderColor':'#1A1A1A','primaryTextColor':'#1A1A1A','lineColor':'#6B6460','clusterBkg':'#F4EFE7','clusterBorder':'#D9D2C7','edgeLabelBackground':'#FFFFFF'}}}%%
 flowchart LR
     A["Sources<br/><i>Dior.com · Vestiaire Collective · Rebag</i>"] --> B["Team pipeline · Python<br/><i>scraping · normalisation · fuzzy matching</i>"] --> C["This repo · dbt<br/><i>staging · marts · 18 tests · CI</i>"] --> D["Usage<br/><i>BigQuery · Power BI · API</i>"]
 
@@ -116,15 +116,15 @@ Status labels are in French because the project's stakeholders worked in French.
 Every product gets a status from the [`rvr_status`](macros/rvr_status.sql) macro:
 
 ```mermaid
-%%{init: {'theme':'base','themeVariables':{'primaryColor':'#FBF8F3','primaryBorderColor':'#1A1A1A','primaryTextColor':'#1A1A1A','lineColor':'#6B6460','clusterBkg':'#F4EFE7','clusterBorder':'#D9D2C7','edgeLabelBackground':'#FFFFFF','fontFamily':'Helvetica, Arial, sans-serif'}}}%%
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#FBF8F3','primaryBorderColor':'#1A1A1A','primaryTextColor':'#1A1A1A','lineColor':'#6B6460','clusterBkg':'#F4EFE7','clusterBorder':'#D9D2C7','edgeLabelBackground':'#FFFFFF'}}}%%
 flowchart LR
     A[Dior product] --> B{Matched<br/>listings?}
     B -- 0 --> C[not matched<br/><i>improve matching</i>]
     B -- 1 to 4 --> D[not enough volume<br/><i>wait for more data</i>]
-    B -- 5 or more --> E{RVR}
-    E -- "RVR 100 or more" --> F[resells above retail<br/><i>pricing power, possible icon</i>]
-    E -- "RVR 90 to 99" --> G[holds its value<br/><i>healthy product</i>]
-    E -- "RVR under 90" --> H[depreciates<br/><i>watch exposure</i>]
+    B -- 5 or more --> E{RVR in %}
+    E -- "100 or more" --> F[resells above retail<br/><i>pricing power, possible icon</i>]
+    E -- "90 to 99" --> G[holds its value<br/><i>healthy product</i>]
+    E -- "under 90" --> H[depreciates<br/><i>watch exposure</i>]
 
     classDef up fill:#A8842C,stroke:#1A1A1A,color:#FFFFFF
     classDef keep fill:#D9C9A3,stroke:#1A1A1A,color:#1A1A1A
@@ -143,7 +143,7 @@ What this changes for the project's goal: a merchandising team never sees a numb
 ## Models
 
 ```mermaid
-%%{init: {'theme':'base','themeVariables':{'primaryColor':'#FBF8F3','primaryBorderColor':'#1A1A1A','primaryTextColor':'#1A1A1A','lineColor':'#6B6460','clusterBkg':'#F4EFE7','clusterBorder':'#D9D2C7','edgeLabelBackground':'#FFFFFF','fontFamily':'Helvetica, Arial, sans-serif'}}}%%
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#FBF8F3','primaryBorderColor':'#1A1A1A','primaryTextColor':'#1A1A1A','lineColor':'#6B6460','clusterBkg':'#F4EFE7','clusterBorder':'#D9D2C7','edgeLabelBackground':'#FFFFFF'}}}%%
 flowchart LR
     A[(raw_retail_products<br/>seed)] --> B[stg_retail_products<br/>view]
     C[(raw_resale_listings<br/>seed)] --> D[stg_resale_listings<br/>view]

@@ -62,7 +62,7 @@ Le pipeline complet de l'équipe (scraping, normalisation, matching des annonces
 Dans le pipeline d'origine, le RVR est calculé en Python, **annonce par annonce**, puis chargé dans BigQuery. Ce dépôt ajoute une couche dbt entre les données rattachées et les chiffres que l'on montre.
 
 ```mermaid
-%%{init: {'theme':'base','themeVariables':{'primaryColor':'#FBF8F3','primaryBorderColor':'#1A1A1A','primaryTextColor':'#1A1A1A','lineColor':'#6B6460','clusterBkg':'#F4EFE7','clusterBorder':'#D9D2C7','edgeLabelBackground':'#FFFFFF','fontFamily':'Helvetica, Arial, sans-serif'}}}%%
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#FBF8F3','primaryBorderColor':'#1A1A1A','primaryTextColor':'#1A1A1A','lineColor':'#6B6460','clusterBkg':'#F4EFE7','clusterBorder':'#D9D2C7','edgeLabelBackground':'#FFFFFF'}}}%%
 flowchart LR
     A["Sources<br/><i>Dior.com · Vestiaire Collective · Rebag</i>"] --> B["Pipeline de l'équipe · Python<br/><i>scraping · normalisation · matching flou</i>"] --> C["Ce dépôt · dbt<br/><i>staging · marts · 18 tests · CI</i>"] --> D["Usage<br/><i>BigQuery · Power BI · API</i>"]
 
@@ -114,15 +114,15 @@ L'**escarpin slingback J'Adior** a 10 annonces, entre 15,6&nbsp;% et 38,5&nbsp;%
 Chaque produit reçoit un statut, calculé par la macro [`rvr_status`](macros/rvr_status.sql) :
 
 ```mermaid
-%%{init: {'theme':'base','themeVariables':{'primaryColor':'#FBF8F3','primaryBorderColor':'#1A1A1A','primaryTextColor':'#1A1A1A','lineColor':'#6B6460','clusterBkg':'#F4EFE7','clusterBorder':'#D9D2C7','edgeLabelBackground':'#FFFFFF','fontFamily':'Helvetica, Arial, sans-serif'}}}%%
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#FBF8F3','primaryBorderColor':'#1A1A1A','primaryTextColor':'#1A1A1A','lineColor':'#6B6460','clusterBkg':'#F4EFE7','clusterBorder':'#D9D2C7','edgeLabelBackground':'#FFFFFF'}}}%%
 flowchart LR
-    A[Produit Dior] --> B{Annonces<br/>rattachées ?}
+    A[Produit Dior] --> B{Annonces<br/>rattachées}
     B -- 0 --> C[non rattaché<br/><i>améliorer le matching</i>]
     B -- 1 à 4 --> D[volume insuffisant<br/><i>attendre plus de données</i>]
-    B -- 5 et plus --> E{RVR}
-    E -- "RVR de 100 et plus" --> F[se revend plus cher<br/><i>pouvoir de prix, icône possible</i>]
-    E -- "RVR de 90 à 99" --> G[garde sa valeur<br/><i>produit sain</i>]
-    E -- "RVR sous 90" --> H[se déprécie<br/><i>surveiller l'exposition</i>]
+    B -- 5 et plus --> E{RVR en %}
+    E -- "100 et plus" --> F[se revend plus cher<br/><i>pouvoir de prix, icône possible</i>]
+    E -- "90 à 99" --> G[garde sa valeur<br/><i>produit sain</i>]
+    E -- "moins de 90" --> H[se déprécie<br/><i>surveiller l'exposition</i>]
 
     classDef up fill:#A8842C,stroke:#1A1A1A,color:#FFFFFF
     classDef keep fill:#D9C9A3,stroke:#1A1A1A,color:#1A1A1A
@@ -141,7 +141,7 @@ Ce que ça change pour l'objectif du projet : une équipe merchandising ne voit 
 ## Modèles
 
 ```mermaid
-%%{init: {'theme':'base','themeVariables':{'primaryColor':'#FBF8F3','primaryBorderColor':'#1A1A1A','primaryTextColor':'#1A1A1A','lineColor':'#6B6460','clusterBkg':'#F4EFE7','clusterBorder':'#D9D2C7','edgeLabelBackground':'#FFFFFF','fontFamily':'Helvetica, Arial, sans-serif'}}}%%
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#FBF8F3','primaryBorderColor':'#1A1A1A','primaryTextColor':'#1A1A1A','lineColor':'#6B6460','clusterBkg':'#F4EFE7','clusterBorder':'#D9D2C7','edgeLabelBackground':'#FFFFFF'}}}%%
 flowchart LR
     A[(raw_retail_products<br/>seed)] --> B[stg_retail_products<br/>view]
     C[(raw_resale_listings<br/>seed)] --> D[stg_resale_listings<br/>view]
