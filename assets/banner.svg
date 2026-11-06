@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="240" viewBox="0 0 960 240" role="img" aria-label="RVR : Resale Value Retention, projet dbt EDHEC">
+
+<style>
+  .bg { fill: #FBF8F3; }
+  .ink { fill: #1A1A1A; }
+  .muted { fill: #6B6460; }
+  .rule { stroke: #D9D2C7; }
+  .zone-dep { fill: #EFE7DC; }
+  .zone-keep { fill: #E6DCC8; }
+  .zone-up { fill: #D9C9A3; }
+  .dot { fill: #1A1A1A; fill-opacity: 0.55; }
+  .median { fill: #A8842C; stroke: #1A1A1A; stroke-width: 1.5; }
+  .flag { fill: #B3261E; }
+  .gold { fill: #A8842C; }
+  text { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  @media (prefers-color-scheme: dark) {
+    .bg { fill: #161514; }
+    .ink { fill: #F2EEE8; }
+    .muted { fill: #A39C94; }
+    .rule { stroke: #3A3632; }
+    .zone-dep { fill: #22201D; }
+    .zone-keep { fill: #2E2A24; }
+    .zone-up { fill: #3D3528; }
+    .dot { fill: #F2EEE8; fill-opacity: 0.6; }
+    .median { fill: #D4AF5A; stroke: #F2EEE8; }
+    .flag { fill: #F2726A; }
+    .gold { fill: #D4AF5A; }
+  }
+</style>
+
+<rect class="bg" width="960" height="240" rx="12"/>
+<text x="56" y="62" class="muted" font-size="14" letter-spacing="4">EDHEC BUSINESS DATA MANAGEMENT · 2026</text>
+<text x="56" y="124" class="ink" font-size="52" font-weight="300" letter-spacing="2">Resale Value Retention</text>
+<rect x="56" y="146" width="64" height="3" class="gold"/>
+<text x="56" y="190" class="ink" font-size="22" font-weight="300">RVR = prix de revente médian / prix boutique × 100</text>
+<text x="904" y="214" class="muted" font-size="13" text-anchor="end">dbt · DuckDB · BigQuery</text>
+</svg>

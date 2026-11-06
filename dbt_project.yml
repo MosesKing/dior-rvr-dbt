@@ -1,0 +1,20 @@
+name: dior_rvr
+version: '1.0.0'
+config-version: 2
+profile: dior_rvr
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+
+vars:
+  # Aucun RVR n'est affiché sous ce nombre d'annonces rattachées (règle du projet EDHEC)
+  min_listings: 5
+
+models:
+  dior_rvr:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table

@@ -1,0 +1,58 @@
+version: 2
+
+seeds:
+  - name: raw_retail_products
+    description: "Extrait des prix boutique scrapés sur dior.com (4 produits de l'échantillon du projet EDHEC)."
+  - name: raw_resale_listings
+    description: "Annonces de revente Vestiaire Collective relevées le 30/10/2026, déjà rattachées à un produit boutique par le matching (fuzzy) côté Python."
+
+models:
+  - name: stg_retail_products
+    description: "Produits Dior en boutique, types et catégories normalisés."
+    columns:
+      - name: retail_product_id
+        tests: [unique, not_null]
+      - name: retail_price_eur
+        tests: [not_null]
+      - name: category
+        tests:
+          - accepted_values:
+              values: ['chaussures', 'sacs', 'prêt-à-porter']
+
+  - name: stg_resale_listings
+    description: "Annonces de revente, une ligne par annonce."
+    columns:
+      - name: listing_id
+        tests: [unique, not_null]
+      - name: retail_product_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_retail_products')
+              field: retail_product_id
+      - name: resale_price_eur
+        tests: [not_null]
+      - name: currency
+        tests:
+          - accepted_values:
+              values: ['EUR']
+
+  - name: mart_rvr_by_product
+    description: >
+      RVR (Resale Value Retention) par produit : prix de revente médian / prix boutique x 100.
+      Aucun RVR n'est calculé sous le volume minimum d'annonces (variable min_listings).
+    columns:
+      - name: retail_product_id
+        tests: [unique, not_null]
+      - name: status
+        description: "Statut lisible par un non-technicien."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['non rattaché', 'volume insuffisant', 'se revend plus cher', 'garde sa valeur', 'se déprécie']
+
+  - name: mart_matching_coverage
+    description: "Couverture du matching (produits avec annonces rattachées) par catégorie."
+    columns:
+      - name: category
+        tests: [unique, not_null]

@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="440" viewBox="0 0 960 440" role="img" aria-label="RVR de chaque annonce de revente, par produit">
+
+<style>
+  .bg { fill: #FBF8F3; }
+  .ink { fill: #1A1A1A; }
+  .muted { fill: #6B6460; }
+  .rule { stroke: #D9D2C7; }
+  .zone-dep { fill: #EFE7DC; }
+  .zone-keep { fill: #E6DCC8; }
+  .zone-up { fill: #D9C9A3; }
+  .dot { fill: #1A1A1A; fill-opacity: 0.55; }
+  .median { fill: #A8842C; stroke: #1A1A1A; stroke-width: 1.5; }
+  .flag { fill: #B3261E; }
+  .gold { fill: #A8842C; }
+  text { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  @media (prefers-color-scheme: dark) {
+    .bg { fill: #161514; }
+    .ink { fill: #F2EEE8; }
+    .muted { fill: #A39C94; }
+    .rule { stroke: #3A3632; }
+    .zone-dep { fill: #22201D; }
+    .zone-keep { fill: #2E2A24; }
+    .zone-up { fill: #3D3528; }
+    .dot { fill: #F2EEE8; fill-opacity: 0.6; }
+    .median { fill: #D4AF5A; stroke: #F2EEE8; }
+    .flag { fill: #F2726A; }
+    .gold { fill: #D4AF5A; }
+  }
+</style>
+
+<rect class="bg" width="960" height="440" rx="12"/>
+<text x="40" y="48" class="ink" font-size="20" font-weight="600">Une annonce ne suffit pas</text>
+<text x="40" y="74" class="muted" font-size="14">RVR de chaque annonce Vestiaire Collective, par produit. Chaque point est une annonce.</text>
+<rect class="zone-dep" x="250.0" y="110" width="495.0" height="250"/>
+<rect class="zone-keep" x="745.0" y="110" width="55.0" height="250"/>
+<rect class="zone-up" x="800.0" y="110" width="110.0" height="250"/>
+<text x="497.5" y="130" class="muted" font-size="12" text-anchor="middle">se déprécie</text>
+<text x="772.5" y="130" class="muted" font-size="11" text-anchor="middle">garde</text>
+<text x="855.0" y="130" class="muted" font-size="12" text-anchor="middle">se revend plus cher</text>
+<line class="rule" x1="250.0" x2="250.0" y1="360" y2="366" stroke-width="1"/>
+<text x="250.0" y="384" class="muted" font-size="12" text-anchor="middle">0 %</text>
+<line class="rule" x1="360.0" x2="360.0" y1="360" y2="366" stroke-width="1"/>
+<text x="360.0" y="384" class="muted" font-size="12" text-anchor="middle">20 %</text>
+<line class="rule" x1="470.0" x2="470.0" y1="360" y2="366" stroke-width="1"/>
+<text x="470.0" y="384" class="muted" font-size="12" text-anchor="middle">40 %</text>
+<line class="rule" x1="580.0" x2="580.0" y1="360" y2="366" stroke-width="1"/>
+<text x="580.0" y="384" class="muted" font-size="12" text-anchor="middle">60 %</text>
+<line class="rule" x1="690.0" x2="690.0" y1="360" y2="366" stroke-width="1"/>
+<text x="690.0" y="384" class="muted" font-size="12" text-anchor="middle">80 %</text>
+<line class="rule" x1="800.0" x2="800.0" y1="360" y2="366" stroke-width="1"/>
+<text x="800.0" y="384" class="muted" font-size="12" text-anchor="middle">100 %</text>
+<line class="rule" x1="910.0" x2="910.0" y1="360" y2="366" stroke-width="1"/>
+<text x="910.0" y="384" class="muted" font-size="12" text-anchor="middle">120 %</text>
+<text x="40" y="174" class="ink" font-size="15" font-weight="600">Escarpin slingback J'Adior</text>
+<text x="40" y="194" class="muted" font-size="12">10 annonces · boutique 1 690 €</text>
+<line class="rule" x1="250" x2="910" y1="180" y2="180" stroke-width="1"/>
+<circle class="dot" cx="335.6" cy="180" r="6"/>
+<circle class="dot" cx="359.3" cy="180" r="6"/>
+<circle class="dot" cx="378.2" cy="180" r="6"/>
+<circle class="dot" cx="386.0" cy="180" r="6"/>
+<circle class="dot" cx="386.7" cy="190" r="6"/>
+<circle class="dot" cx="386.7" cy="170" r="6"/>
+<circle class="dot" cx="389.6" cy="200" r="6"/>
+<circle class="dot" cx="395.5" cy="180" r="6"/>
+<circle class="dot" cx="451.8" cy="180" r="6"/>
+<circle class="dot" cx="461.9" cy="180" r="6"/>
+<path class="median" d="M386.9,168 L398.9,180 L386.9,192 L374.9,180 Z"/>
+<text x="386.9" y="152" class="ink" font-size="13" font-weight="600" text-anchor="middle">médiane 24,9 %</text>
+<text x="40" y="274" class="ink" font-size="15" font-weight="600">Sac Dior Bow Medium</text>
+<text x="40" y="294" class="muted" font-size="12">2 annonces · boutique 4 100 €</text>
+<line class="rule" x1="250" x2="910" y1="280" y2="280" stroke-width="1"/>
+<circle class="dot" cx="390.2" cy="280" r="6"/>
+<circle class="dot" cx="834.6" cy="280" r="6"/>
+<text x="390.2" y="264" class="muted" font-size="12" text-anchor="middle">25,5 %</text>
+<text x="834.6" y="264" class="flag" font-size="12" font-weight="600" text-anchor="middle">106,3 %</text>
+<text x="250" y="314" class="flag" font-size="13" font-weight="600">2 annonces : aucun RVR affiché (volume insuffisant)</text>
+<text x="250" y="332" class="muted" font-size="12">Calculé annonce par annonce, ce même sac serait classé à la fois « se déprécie » et « se revend plus cher ».</text>
+<text x="40" y="416" class="muted" font-size="12">◆ RVR retenu (médiane, à partir de 5 annonces)   ● une annonce. Données : extrait du projet, relevé du 30/10/2026.</text>
+</svg>

@@ -1,0 +1,16 @@
+dior_rvr:
+  target: duckdb
+  outputs:
+    # Local run on the seed sample, no credentials needed
+    duckdb:
+      type: duckdb
+      path: dior_rvr.duckdb
+      threads: 4
+    # Optional: run against BigQuery with `dbt build --target bigquery`
+    bigquery:
+      type: bigquery
+      method: oauth
+      project: "{{ env_var('GCP_PROJECT', 'your-gcp-project') }}"
+      dataset: "{{ env_var('BQ_DATASET', 'dior_rvr') }}"
+      location: EU
+      threads: 4
