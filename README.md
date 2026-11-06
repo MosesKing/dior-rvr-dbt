@@ -119,7 +119,7 @@ flowchart LR
     A[Produit Dior] --> B{Annonces<br/>rattachées}
     B -- 0 --> C[non rattaché<br/><i>améliorer le matching</i>]
     B -- 1 à 4 --> D[volume insuffisant<br/><i>attendre plus de données</i>]
-    B -- 5 et plus --> E{RVR en %}
+    B -- 5 et plus --> E{RVR}
     E -- "100 et plus" --> F[se revend plus cher<br/><i>pouvoir de prix, icône possible</i>]
     E -- "90 à 99" --> G[garde sa valeur<br/><i>produit sain</i>]
     E -- "moins de 90" --> H[se déprécie<br/><i>surveiller l'exposition</i>]

@@ -121,7 +121,7 @@ flowchart LR
     A[Dior product] --> B{Matched<br/>listings?}
     B -- 0 --> C[not matched<br/><i>improve matching</i>]
     B -- 1 to 4 --> D[not enough volume<br/><i>wait for more data</i>]
-    B -- 5 or more --> E{RVR in %}
+    B -- 5 or more --> E{RVR}
     E -- "100 or more" --> F[resells above retail<br/><i>pricing power, possible icon</i>]
     E -- "90 to 99" --> G[holds its value<br/><i>healthy product</i>]
     E -- "under 90" --> H[depreciates<br/><i>watch exposure</i>]
