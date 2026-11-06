@@ -40,9 +40,9 @@ RVR = prix de revente médian / prix boutique × 100
 
 | RVR | Lecture | Ce que ça veut dire pour Dior |
 |:---|:---|:---|
-| **≥ 100 %** | se revend plus cher | Pouvoir de prix pas encore exploité, candidat « icône » |
-| **90 à 100 %** | garde sa valeur | Produit qui protège l'image de la marque |
-| **< 90 %** | se déprécie | Comportement normal d'un bien de consommation, ou signe de surexposition |
+| **≥ 100&nbsp;%** | se revend plus cher | Pouvoir de prix pas encore exploité, candidat « icône » |
+| **90 à 100&nbsp;%** | garde sa valeur | Produit qui protège l'image de la marque |
+| **< 90&nbsp;%** | se déprécie | Comportement normal d'un bien de consommation, ou signe de surexposition |
 
 ### Pourquoi c'est utile
 
@@ -62,35 +62,30 @@ Le pipeline complet de l'équipe (scraping, normalisation, matching des annonces
 Dans le pipeline d'origine, le RVR est calculé en Python, **annonce par annonce**, puis chargé dans BigQuery. Ce dépôt ajoute une couche dbt entre les données rattachées et les chiffres que l'on montre.
 
 ```mermaid
-flowchart LR
-    subgraph S["Sources"]
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#FBF8F3','primaryBorderColor':'#1A1A1A','primaryTextColor':'#1A1A1A','lineColor':'#6B6460','clusterBkg':'#F4EFE7','clusterBorder':'#D9D2C7','edgeLabelBackground':'#FFFFFF','fontFamily':'Helvetica, Arial, sans-serif'}}}%%
+flowchart TB
+    subgraph S["① Sources"]
+        direction LR
         D[Dior.com<br/>prix boutique]
         V[Vestiaire Collective<br/>annonces]
         R[Rebag<br/>annonces]
     end
-    subgraph P["Pipeline de l'équipe · Python"]
-        SC[Scrapers<br/>Playwright]
-        N[Normalisation]
-        M[Matching flou<br/>≥ 70 % similarité]
+    subgraph P["② Pipeline de l'équipe · Python"]
+        direction LR
+        SC[Scrapers<br/>Playwright] --> N[Normalisation] --> M[Matching flou<br/>≥ 70 % de similarité]
     end
-    subgraph T["Ce dépôt · dbt"]
-        STG[staging<br/>nettoyage, typage]
-        MART[marts<br/>RVR, statut, couverture]
-        TST[18 tests<br/>+ CI]
+    subgraph T["③ Ce dépôt · dbt · 18 tests à chaque push"]
+        direction LR
+        STG[staging<br/>nettoyage, typage] --> MART[marts<br/>RVR médian, statut, couverture]
     end
-    subgraph U["Usage"]
-        BQ[(BigQuery)]
-        BI[Power BI · API]
+    subgraph U["④ Usage"]
+        direction LR
+        BQ[(BigQuery)] --> BI[Power BI · API]
     end
-    D --> SC
-    V --> SC
-    R --> SC
-    SC --> N --> M --> STG --> MART --> BQ --> BI
-    TST -. vérifie .-> STG
-    TST -. vérifie .-> MART
+    S --> P --> T --> U
 
     classDef dbt fill:#A8842C,stroke:#1A1A1A,color:#FFFFFF
-    class STG,MART,TST dbt
+    class STG,MART dbt
 ```
 
 | | Avant (Python) | Avec dbt |
@@ -109,24 +104,24 @@ flowchart LR
 ## Une annonce ne suffit pas
 
 <p align="center">
-  <img src="assets/rvr_listings.svg" alt="RVR de chaque annonce : l'escarpin a une médiane de 24,9 % sur 10 annonces ; le sac Bow a 2 annonces, à 25,5 % et 106,3 %" width="100%">
+  <img src="assets/rvr_listings.svg" alt="RVR de chaque annonce : l'escarpin a une médiane de 24,9&nbsp;% sur 10 annonces ; le sac Bow a 2 annonces, à 25,5&nbsp;% et 106,3&nbsp;%" width="100%">
 </p>
 
-Le **sac Dior Bow Medium** (4 100 € en boutique) n'a que 2 annonces : l'une à 1 045 €, l'autre à 4 358 €.
+Le **sac Dior Bow Medium** (4 100&nbsp;€ en boutique) n'a que 2 annonces : l'une à 1 045&nbsp;€, l'autre à 4 358&nbsp;€.
 
-- Calculé annonce par annonce, ce sac est à la fois *Depreciating* (25,5 %) et *Investment-like* (106,3 %).
+- Calculé annonce par annonce, ce sac est à la fois *Depreciating* (25,5&nbsp;%) et *Investment-like* (106,3&nbsp;%).
 - Avec dbt, il est marqué **volume insuffisant**, et aucun RVR n'est affiché tant qu'il n'y a pas 5 annonces.
 
-L'**escarpin slingback J'Adior** a 10 annonces, entre 15,6 % et 38,5 %. La médiane, **24,9 %**, est un chiffre stable sur lequel on peut décider : ce modèle se déprécie fortement.
+L'**escarpin slingback J'Adior** a 10 annonces, entre 15,6&nbsp;% et 38,5&nbsp;%. La médiane, **24,9&nbsp;%**, est un chiffre stable sur lequel on peut décider : ce modèle se déprécie fortement.
 
 ### Résultat sur l'échantillon
 
 | Produit | Catégorie | Boutique | Annonces | Médiane revente | RVR | Statut |
 |:---|:---|---:|---:|---:|---:|:---|
-| Escarpin slingback J'Adior | chaussures | 1 690 € | 10 | 420 € | **24,9 %** | se déprécie |
-| Sac Dior Bow Medium | sacs | 4 100 € | 2 | 2 701,50 € | n.d. | volume insuffisant |
-| Mule 30M Dior Or | chaussures | 950 € | 0 | n.d. | n.d. | non rattaché |
-| Surchemise Cannage | prêt-à-porter | 2 700 € | 0 | n.d. | n.d. | non rattaché |
+| Escarpin slingback J'Adior | chaussures | 1 690&nbsp;€ | 10 | 420&nbsp;€ | **24,9&nbsp;%** | se déprécie |
+| Sac Dior Bow Medium | sacs | 4 100&nbsp;€ | 2 | 2 701,50&nbsp;€ | n.d. | volume insuffisant |
+| Mule 30M Dior Or | chaussures | 950&nbsp;€ | 0 | n.d. | n.d. | non rattaché |
+| Surchemise Cannage | prêt-à-porter | 2 700&nbsp;€ | 0 | n.d. | n.d. | non rattaché |
 
 **Couverture du matching** (`mart_matching_coverage`) : 2 produits sur 4 ont des annonces rattachées. Dans le projet, c'était le vrai goulot : le scraping de Vestiaire trouvait peu d'annonces par produit. Le suivre comme un KPI montre où améliorer le matching avant de faire confiance au RVR.
 
@@ -137,7 +132,8 @@ L'**escarpin slingback J'Adior** a 10 annonces, entre 15,6 % et 38,5 %. La médi
 Chaque produit reçoit un statut, calculé par la macro [`rvr_status`](macros/rvr_status.sql) :
 
 ```mermaid
-flowchart TD
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#FBF8F3','primaryBorderColor':'#1A1A1A','primaryTextColor':'#1A1A1A','lineColor':'#6B6460','clusterBkg':'#F4EFE7','clusterBorder':'#D9D2C7','edgeLabelBackground':'#FFFFFF','fontFamily':'Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
     A[Produit Dior] --> B{Annonces<br/>rattachées ?}
     B -- 0 --> C[non rattaché<br/><i>améliorer le matching</i>]
     B -- 1 à 4 --> D[volume insuffisant<br/><i>attendre plus de données</i>]
@@ -163,12 +159,16 @@ Ce que ça change pour l'objectif du projet : une équipe merchandising ne voit 
 ## Modèles
 
 ```mermaid
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#FBF8F3','primaryBorderColor':'#1A1A1A','primaryTextColor':'#1A1A1A','lineColor':'#6B6460','clusterBkg':'#F4EFE7','clusterBorder':'#D9D2C7','edgeLabelBackground':'#FFFFFF','fontFamily':'Helvetica, Arial, sans-serif'}}}%%
 flowchart LR
     A[(raw_retail_products<br/>seed)] --> B[stg_retail_products<br/>view]
     C[(raw_resale_listings<br/>seed)] --> D[stg_resale_listings<br/>view]
     B --> E[mart_rvr_by_product<br/>table]
     D --> E
     E --> F[mart_matching_coverage<br/>table]
+
+    classDef mart fill:#A8842C,stroke:#1A1A1A,color:#FFFFFF
+    class E,F mart
 ```
 
 | Modèle | Rôle |
@@ -190,7 +190,7 @@ flowchart LR
 
 ### Choix techniques
 
-- **Médiane, pas moyenne** : une annonce à 4 358 € ne doit pas tirer tout le produit.
+- **Médiane, pas moyenne** : une annonce à 4 358&nbsp;€ ne doit pas tirer tout le produit.
 - **Même code sur deux entrepôts** : la macro [`median`](macros/median.sql) utilise `adapter.dispatch`. `median()` exacte sur DuckDB, `APPROX_QUANTILES` sur BigQuery, qui n'a pas de fonction médiane.
 - **Prix en `numeric`** : pas de flottants pour de l'argent.
 - **DuckDB en local et en CI** : le projet se lance en quelques secondes, sans compte cloud.

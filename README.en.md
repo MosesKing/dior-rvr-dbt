@@ -62,35 +62,30 @@ The team's full pipeline (scraping, normalisation, listing matching, BigQuery, F
 In the original pipeline, RVR is computed in Python, **one listing at a time**, then loaded into BigQuery. This repo adds a dbt layer between the matched data and the numbers people see.
 
 ```mermaid
-flowchart LR
-    subgraph S["Sources"]
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#FBF8F3','primaryBorderColor':'#1A1A1A','primaryTextColor':'#1A1A1A','lineColor':'#6B6460','clusterBkg':'#F4EFE7','clusterBorder':'#D9D2C7','edgeLabelBackground':'#FFFFFF','fontFamily':'Helvetica, Arial, sans-serif'}}}%%
+flowchart TB
+    subgraph S["① Sources"]
+        direction LR
         D[Dior.com<br/>retail prices]
         V[Vestiaire Collective<br/>listings]
         R[Rebag<br/>listings]
     end
-    subgraph P["Team pipeline · Python"]
-        SC[Scrapers<br/>Playwright]
-        N[Normalisation]
-        M[Fuzzy matching<br/>≥ 70% similarity]
+    subgraph P["② Team pipeline · Python"]
+        direction LR
+        SC[Scrapers<br/>Playwright] --> N[Normalisation] --> M[Fuzzy matching<br/>≥ 70% similarity]
     end
-    subgraph T["This repo · dbt"]
-        STG[staging<br/>cleaning, typing]
-        MART[marts<br/>RVR, status, coverage]
-        TST[18 tests<br/>+ CI]
+    subgraph T["③ This repo · dbt · 18 tests on every push"]
+        direction LR
+        STG[staging<br/>cleaning, typing] --> MART[marts<br/>median RVR, status, coverage]
     end
-    subgraph U["Usage"]
-        BQ[(BigQuery)]
-        BI[Power BI · API]
+    subgraph U["④ Usage"]
+        direction LR
+        BQ[(BigQuery)] --> BI[Power BI · API]
     end
-    D --> SC
-    V --> SC
-    R --> SC
-    SC --> N --> M --> STG --> MART --> BQ --> BI
-    TST -. checks .-> STG
-    TST -. checks .-> MART
+    S --> P --> T --> U
 
     classDef dbt fill:#A8842C,stroke:#1A1A1A,color:#FFFFFF
-    class STG,MART,TST dbt
+    class STG,MART dbt
 ```
 
 | | Before (Python) | With dbt |
@@ -139,7 +134,8 @@ Status labels are in French because the project's stakeholders worked in French.
 Every product gets a status from the [`rvr_status`](macros/rvr_status.sql) macro:
 
 ```mermaid
-flowchart TD
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#FBF8F3','primaryBorderColor':'#1A1A1A','primaryTextColor':'#1A1A1A','lineColor':'#6B6460','clusterBkg':'#F4EFE7','clusterBorder':'#D9D2C7','edgeLabelBackground':'#FFFFFF','fontFamily':'Helvetica, Arial, sans-serif'}}}%%
+flowchart LR
     A[Dior product] --> B{Matched<br/>listings?}
     B -- 0 --> C[not matched<br/><i>improve matching</i>]
     B -- 1 to 4 --> D[not enough volume<br/><i>wait for more data</i>]
@@ -165,12 +161,16 @@ What this changes for the project's goal: a merchandising team never sees a numb
 ## Models
 
 ```mermaid
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#FBF8F3','primaryBorderColor':'#1A1A1A','primaryTextColor':'#1A1A1A','lineColor':'#6B6460','clusterBkg':'#F4EFE7','clusterBorder':'#D9D2C7','edgeLabelBackground':'#FFFFFF','fontFamily':'Helvetica, Arial, sans-serif'}}}%%
 flowchart LR
     A[(raw_retail_products<br/>seed)] --> B[stg_retail_products<br/>view]
     C[(raw_resale_listings<br/>seed)] --> D[stg_resale_listings<br/>view]
     B --> E[mart_rvr_by_product<br/>table]
     D --> E
     E --> F[mart_matching_coverage<br/>table]
+
+    classDef mart fill:#A8842C,stroke:#1A1A1A,color:#FFFFFF
+    class E,F mart
 ```
 
 | Model | Role |
